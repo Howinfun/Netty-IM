@@ -6,7 +6,7 @@ import java.nio.channels.SocketChannel;
 
 /**
  * @author Howinfun
- * @desc
+ * @desc 客户端的通信处理
  * @date 2019/6/21
  */
 public class ClientHandler {

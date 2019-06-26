@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 /**
  * @author Howinfun
- * @desc
+ * @desc 客户端的Selector，负责客户端的读操作
  * @date 2019/6/21
  */
 @AllArgsConstructor
