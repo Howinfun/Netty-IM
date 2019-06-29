@@ -33,7 +33,7 @@ public class PacketCodeC {
     }
 
     /** 单例 */
-    private static final PacketCodeC INSTANCE = new PacketCodeC();
+    public static final PacketCodeC INSTANCE = new PacketCodeC();
 
     public ByteBuf encode(ChannelHandlerContext ctx,Packet packet){
         ByteBuf byteBuf = ctx.alloc().ioBuffer();

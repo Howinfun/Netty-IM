@@ -25,7 +25,7 @@ public class Client {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-
+                        ch.pipeline().addLast(new ClientHandler());
                     }
                 });
         connect(bootstrap,"127.0.0.1",1000,5);

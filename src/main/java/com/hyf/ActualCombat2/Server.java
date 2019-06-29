@@ -27,7 +27,7 @@ public class Server {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-
+                        ch.pipeline().addLast(new ServerHandler());
                     }
                 });
         bind(serverBootstrap,1000);
@@ -36,7 +36,7 @@ public class Server {
     private static void bind(ServerBootstrap serverBootstrap,int port){
         serverBootstrap.bind(port).addListener(future -> {
             if (future.isSuccess()){
-                System.out.println("服务端启动成功");
+                System.out.println("服务端启动成功,端口号为"+port);
             }else{
                 bind(serverBootstrap,port+1);
             }
