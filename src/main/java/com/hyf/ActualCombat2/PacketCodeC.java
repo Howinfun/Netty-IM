@@ -76,7 +76,7 @@ public class PacketCodeC {
     }
 
     private  Serializer getSerializer(byte serilizerAlogrithm){
-        return serializerMap.get(SerializerAlogrithm.JSON_SERIALIZE);
+        return serializerMap.get(serilizerAlogrithm);
     }
     private Class<? extends Packet> getPacketType(byte command){
         return packetMap.get(command);
