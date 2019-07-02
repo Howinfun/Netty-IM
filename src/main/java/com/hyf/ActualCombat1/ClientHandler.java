@@ -14,10 +14,12 @@ import java.nio.charset.Charset;
 public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ByteBuf byteBuf = getByteBuf(ctx);
-        String content = "你好，我来啦";
-        System.out.println("客户端写出消息->"+content);
-        ctx.writeAndFlush(byteBuf.writeBytes(content.getBytes(Charset.forName("utf-8"))));
+        for (int i = 0; i < 100; i++) {
+            ByteBuf byteBuf = getByteBuf(ctx);
+            String content = "你好，欢迎关注我的微信公众号，《闪电侠的博客》!";
+            System.out.println("客户端写出消息->"+content);
+            ctx.writeAndFlush(byteBuf.writeBytes(content.getBytes(Charset.forName("utf-8"))));
+        }
     }
 
     @Override

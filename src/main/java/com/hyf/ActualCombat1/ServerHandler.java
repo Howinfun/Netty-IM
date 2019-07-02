@@ -21,10 +21,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("服务端接收到数据->"+receive);
 
         // 给客户端响应
-        String content = "你好，欢迎连接此服务器";
+        /*String content = "你好，欢迎连接此服务器";
         System.out.println("客户端写出消息->"+content);
         ByteBuf response = getByteBuf(ctx).writeBytes(content.getBytes(Charset.forName("utf-8")));
-        ctx.writeAndFlush(response);
+        ctx.writeAndFlush(response);*/
     }
 
     private ByteBuf getByteBuf(ChannelHandlerContext ctx){
