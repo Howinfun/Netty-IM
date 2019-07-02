@@ -13,6 +13,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.AttributeKey;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +30,8 @@ public class Client {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(workGroup)
                 .channel(NioSocketChannel.class)
+                // 此处的标识是为了判断是哪方断开了通道
+                .attr(AttributeKey.newInstance("name"),"客户端")
                 .option(ChannelOption.SO_KEEPALIVE,true)
                 .option(ChannelOption.TCP_NODELAY,true)
                 .handler(new ChannelInitializer<NioSocketChannel>() {
