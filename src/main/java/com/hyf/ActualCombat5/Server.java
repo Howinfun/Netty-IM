@@ -1,5 +1,6 @@
 package com.hyf.ActualCombat5;
 
+import com.hyf.ActualCombat5.handler.CountActiveHandler;
 import com.hyf.ActualCombat5.handler.LoginRequestHandler;
 import com.hyf.ActualCombat5.handler.MessageRequestHandler;
 import com.hyf.ActualCombat5.handler.PacketDecoder;
@@ -12,6 +13,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Howinfun
@@ -44,6 +47,7 @@ public class Server {
                          * 在PacketDecoder里头重写exceptionCaught方法，就可以捕捉到客户端断开报的异常，不会导致服务端因此断开
                          */
                         ch.pipeline()//.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4))
+                                .addLast(new CountActiveHandler())
                                 .addLast(new Spliter())
                                 .addLast(new PacketDecoder())
                                 .addLast(new LoginRequestHandler())
@@ -58,6 +62,10 @@ public class Server {
         serverBootstrap.bind(port).addListener(future -> {
             if (future.isSuccess()){
                 System.out.println("服务端启动成功,端口号为"+port);
+                // 启动定时任务打印活跃连接数
+                serverBootstrap.config().group().scheduleAtFixedRate(()->{
+                    System.out.println("当前活跃连接数："+CountActiveHandler.count);
+                },0,1, TimeUnit.SECONDS);
             }else{
                 bind(serverBootstrap,port+1);
             }
