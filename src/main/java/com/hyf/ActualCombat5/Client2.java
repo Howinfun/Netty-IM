@@ -6,7 +6,6 @@ import com.hyf.ActualCombat5.handler.PacketDecoder;
 import com.hyf.ActualCombat5.handler.PacketEncoder;
 import com.hyf.ActualCombat5.handler.Spliter;
 import com.hyf.ActualCombat5.packet.MessageRequestPacket;
-import com.hyf.ActualCombat5.utils.LoginUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -78,14 +77,15 @@ public class Client2 {
     private static void startThread(Channel channel){
         new Thread(()->{
             while(!Thread.interrupted()){
-                if (LoginUtils.isLogin(channel)){
-                    System.out.println("请输入消息：");
-                    Scanner scanner = new Scanner(System.in);
-                    String msg = scanner.nextLine();
-                    MessageRequestPacket requestPacket = new MessageRequestPacket();
-                    requestPacket.setMessage(msg);
-                    channel.writeAndFlush(requestPacket);
-                }
+                // 身份校验逻辑放在服务端，客户端不在进行登录判断
+                /*if (LoginUtils.isLogin(channel)){*/
+                System.out.println("请输入消息：");
+                Scanner scanner = new Scanner(System.in);
+                String msg = scanner.nextLine();
+                MessageRequestPacket requestPacket = new MessageRequestPacket();
+                requestPacket.setMessage(msg);
+                channel.writeAndFlush(requestPacket);
+                /*}*/
             }
         }).start();
     }

@@ -1,5 +1,6 @@
 package com.hyf.ActualCombat5;
 
+import com.hyf.ActualCombat5.handler.AuthHandler;
 import com.hyf.ActualCombat5.handler.CountActiveHandler;
 import com.hyf.ActualCombat5.handler.LoginRequestHandler;
 import com.hyf.ActualCombat5.handler.MessageRequestHandler;
@@ -38,19 +39,24 @@ public class Server {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         /**
-                         * 增加基于长度域拆包器LengthFieldBasedFrameDecoder（适合带有数据长度的自定义协议），防止出现粘包半包
+                         * 1、增加基于长度域拆包器LengthFieldBasedFrameDecoder（适合带有数据长度的自定义协议），防止出现粘包半包
                          *    我们的自定义协议： 魔数(4) 版本号(1) 序列化算法(1) 指令(1) 数据长度(4) 数据(n)
                          *    可以看到，数据长度在4+1+1+1个字节后，然后占4个字节
                          *
                          *    拒绝非本协议连接,之前我们用到的魔数，就是为了能更早的拒绝非本协议的链接，防止浪费过多的链接资源
                          *    因此我们可以继承LengthFieldBasedFrameDecoder，重新decode方法，来判断当前接收的数据是否是本协议的
-                         * 在PacketDecoder里头重写exceptionCaught方法，就可以捕捉到客户端断开报的异常，不会导致服务端因此断开
+                         * 2、在PacketDecoder里头重写exceptionCaught方法，就可以捕捉到客户端断开报的异常，不会导致服务端因此断开
+                         *
+                         * 3、AuthHandler必须放在LoginRequestHandler后面，即先进行登录逻辑再进行验证逻辑
+                         *  注意：因为LoginRequestHandler中是直接调用writeAndFlush响应客户端，所以当客户端下次发送消息过来才会进行身份校验
+                         *  如果登录失败，此时channel才会被断开，活跃连接数才会被减少1（这个待改进）。
                          */
                         ch.pipeline()//.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4))
                                 .addLast(new CountActiveHandler())
                                 .addLast(new Spliter())
                                 .addLast(new PacketDecoder())
                                 .addLast(new LoginRequestHandler())
+                                .addLast(new AuthHandler())
                                 .addLast(new MessageRequestHandler())
                                 .addLast(new PacketEncoder());
                     }

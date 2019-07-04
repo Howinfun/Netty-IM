@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.UUID;
 import com.hyf.ActualCombat5.packet.LoginRequestPacket;
 import com.hyf.ActualCombat5.packet.LoginResponsePacket;
-import com.hyf.ActualCombat5.utils.LoginUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -21,7 +20,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         loginRequestPacket.setUserId(UUID.randomUUID().toString());
         loginRequestPacket.setUserName("howinfun");
-        loginRequestPacket.setPassword("123456");
+        loginRequestPacket.setPassword("123");
 
         // 写数据
         ctx.channel().writeAndFlush(loginRequestPacket);
@@ -32,7 +31,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         if (loginResponsePacket.getSuccess()){
             System.out.println(DateUtil.now()+" 登录成功");
             // 添加登录成功标识，启动线程让用户发送消息
-            LoginUtils.markLogin(ctx.channel());
+            //LoginUtils.markLogin(ctx.channel());
         }else {
             System.out.println(DateUtil.now()+" 登录失败："+loginResponsePacket.getMessage());
         }

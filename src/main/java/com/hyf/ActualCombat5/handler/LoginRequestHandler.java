@@ -3,6 +3,7 @@ package com.hyf.ActualCombat5.handler;
 import cn.hutool.core.date.DateUtil;
 import com.hyf.ActualCombat5.packet.LoginRequestPacket;
 import com.hyf.ActualCombat5.packet.LoginResponsePacket;
+import com.hyf.ActualCombat5.utils.LoginUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -20,6 +21,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         if (isValid(loginRequestPacket)){
             loginResponsePacket.setSuccess(true);
             System.out.println(DateUtil.now()+" 登录成功");
+            // 给chennel添加登录成功的标识
+            LoginUtils.markLogin(ctx.channel());
         }else {
             loginResponsePacket.setSuccess(false);
             loginResponsePacket.setMessage("帐号或密码错误");
