@@ -1,11 +1,13 @@
-package com.hyf.ActualCombat5;
+package com.hyf.ActualCombat6;
 
-import com.hyf.ActualCombat5.handler.LoginResponseHandler;
-import com.hyf.ActualCombat5.handler.MessageResponseHandler;
-import com.hyf.ActualCombat5.handler.PacketDecoder;
-import com.hyf.ActualCombat5.handler.PacketEncoder;
-import com.hyf.ActualCombat5.handler.Spliter;
-import com.hyf.ActualCombat5.packet.MessageRequestPacket;
+import com.hyf.ActualCombat6.handler.LoginResponseHandler;
+import com.hyf.ActualCombat6.handler.MessageResponseHandler;
+import com.hyf.ActualCombat6.handler.PacketDecoder;
+import com.hyf.ActualCombat6.handler.PacketEncoder;
+import com.hyf.ActualCombat6.handler.Spliter;
+import com.hyf.ActualCombat6.packet.LoginRequestPacket;
+import com.hyf.ActualCombat6.packet.MessageRequestPacket;
+import com.hyf.ActualCombat6.utils.LoginUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -13,7 +15,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.AttributeKey;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -23,15 +24,13 @@ import java.util.concurrent.TimeUnit;
  * @desc
  * @date 2019/7/1
  */
-public class Client2 {
+public class Client {
     private static final Integer MAX_RETRY = 5;
     public static void main(String[] args) {
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(workGroup)
                 .channel(NioSocketChannel.class)
-                // 此处的标识是为了判断是哪方断开了通道
-                .attr(AttributeKey.newInstance("name"),"客户端")
                 .option(ChannelOption.SO_KEEPALIVE,true)
                 .option(ChannelOption.TCP_NODELAY,true)
                 .handler(new ChannelInitializer<NioSocketChannel>() {
@@ -75,18 +74,39 @@ public class Client2 {
     }
 
     private static void startThread(Channel channel){
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        Scanner scanner = new Scanner(System.in);
         new Thread(()->{
             while(!Thread.interrupted()){
                 // 身份校验逻辑放在服务端，客户端不在进行登录判断
-                /*if (SessionUtil.isLogin(channel)){*/
-                System.out.println("请输入消息：");
-                Scanner scanner = new Scanner(System.in);
-                String msg = scanner.nextLine();
-                MessageRequestPacket requestPacket = new MessageRequestPacket();
-                requestPacket.setMessage(msg);
-                channel.writeAndFlush(requestPacket);
-                /*}*/
+                if (LoginUtils.isLogin(channel)){
+                    System.out.println("请输入消息：");
+                    String toUserId = scanner.next();
+                    String msg = scanner.next();
+                    MessageRequestPacket requestPacket = new MessageRequestPacket();
+                    requestPacket.setToUserId(toUserId);
+                    requestPacket.setMessage(msg);
+                    channel.writeAndFlush(requestPacket);
+                }else{
+                    System.out.println("请输入用户名：");
+                    String userName = scanner.nextLine();
+                    // 创建登录对象
+                    loginRequestPacket.setUserName(userName);
+                    loginRequestPacket.setPassword("123456");
+
+                    // 写数据
+                    channel.writeAndFlush(loginRequestPacket);
+                    waitForResponse();
+                }
             }
         }).start();
+    }
+
+    private static void waitForResponse(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

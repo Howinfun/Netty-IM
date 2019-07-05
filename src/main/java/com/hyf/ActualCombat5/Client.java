@@ -78,7 +78,7 @@ public class Client {
         new Thread(()->{
             while(!Thread.interrupted()){
                 // 身份校验逻辑放在服务端，客户端不在进行登录判断
-                /*if (LoginUtils.isLogin(channel)){*/
+                /*if (SessionUtil.isLogin(channel)){*/
                     System.out.println("请输入消息：");
                     Scanner scanner = new Scanner(System.in);
                     String msg = scanner.nextLine();
