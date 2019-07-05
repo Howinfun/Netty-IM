@@ -23,13 +23,15 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             System.out.println(DateUtil.now()+" 登录成功");
             // 给chennel添加登录成功的标识
             LoginUtils.markLogin(ctx.channel());
+            ctx.channel().writeAndFlush(loginResponsePacket);
         }else {
             loginResponsePacket.setSuccess(false);
             loginResponsePacket.setMessage("帐号或密码错误");
             System.out.println(DateUtil.now()+" 登录失败");
+            // 登录响应，直接写packet，PacketEncoder会将帮我们编码
+            ctx.channel().writeAndFlush(loginResponsePacket);
+            ctx.channel().close();
         }
-        // 登录响应，直接写packet，PacketEncoder会将帮我们编码
-        ctx.channel().writeAndFlush(loginResponsePacket);
     }
 
     private static boolean isValid(LoginRequestPacket loginRequestPacket){

@@ -20,7 +20,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         loginRequestPacket.setUserId(UUID.randomUUID().toString());
         loginRequestPacket.setUserName("howinfun");
-        loginRequestPacket.setPassword("123");
+        loginRequestPacket.setPassword("123456");
 
         // 写数据
         ctx.channel().writeAndFlush(loginRequestPacket);
