@@ -1,7 +1,6 @@
 package com.hyf.ActualCombat6;
 
 import com.hyf.ActualCombat6.handler.AuthHandler;
-import com.hyf.ActualCombat6.handler.CountActiveHandler;
 import com.hyf.ActualCombat6.handler.LoginRequestHandler;
 import com.hyf.ActualCombat6.handler.MessageRequestHandler;
 import com.hyf.ActualCombat6.handler.PacketDecoder;
@@ -49,7 +48,6 @@ public class Server {
                          *  如果登录失败，此时channel才会被断开，活跃连接数才会被减少1（这个待改进）。
                          */
                         ch.pipeline()//.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4))
-                                .addLast(new CountActiveHandler())
                                 .addLast(new Spliter())
                                 .addLast(new PacketDecoder())
                                 .addLast(new LoginRequestHandler())
@@ -67,7 +65,7 @@ public class Server {
                 System.out.println("服务端启动成功,端口号为"+port);
                 // 启动定时任务打印活跃连接数
                 serverBootstrap.config().group().scheduleAtFixedRate(()->{
-                    System.out.println("当前活跃连接数："+ CountActiveHandler.count);
+                    System.out.println("当前活跃连接数："+ LoginRequestHandler.count);
                 },0,1, TimeUnit.SECONDS);
             }else{
                 bind(serverBootstrap,port+1);

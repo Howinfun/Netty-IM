@@ -9,12 +9,18 @@ import com.hyf.ActualCombat6.utils.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author Howinfun
  * @desc
  * @date 2019/7/1
  */
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    /** 使用静态成员变量来统计，因为静态成员变量只属于类，所有类的实例都持有同一个静态成员变量
+     *  注意：此静态成员变量的修饰词为public，因为要在服务端启动后，打印出来 */
+    public static AtomicInteger count = new AtomicInteger(0);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) throws Exception {
@@ -32,6 +38,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             session.setUserId(userId);
             session.setUserName(loginRequestPacket.getUserName());
             SessionUtil.bindSession(ctx.channel(),session);
+            // 活跃连接数➕1
+            LoginRequestHandler.count.incrementAndGet();
             // 给客户端响应
             ctx.channel().writeAndFlush(loginResponsePacket);
         }else {
@@ -47,8 +55,19 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        // 用户断线之后取消绑定
-        SessionUtil.unBindSession(ctx.channel());
+        // 通道断开时，判断客户端是否登录成功过，如果是的话解绑session，并且活跃连接数减一
+        if (SessionUtil.isLogin(ctx.channel())){
+            // 活跃连接数减1
+            LoginRequestHandler.count.decrementAndGet();
+            // 用户断线之后取消绑定
+            SessionUtil.unBindSession(ctx.channel());
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        // 出现异常，关闭通道->暂时是处理客户端主动断开连接报的异常->IOException: 远程主机强迫关闭了一个现有的连接
+        //ctx.close();
     }
 
     private static boolean isValid(LoginRequestPacket loginRequestPacket){

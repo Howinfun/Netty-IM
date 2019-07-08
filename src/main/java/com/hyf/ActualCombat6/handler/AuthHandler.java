@@ -23,12 +23,18 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
 
     }
 
+    /**
+     * 注意：除了主动调用，客户端断开连接，每个handler都会被移除掉，所以也会被调用一次
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         if (SessionUtil.isLogin(ctx.channel())){
             System.out.println("当前连接登录验证完毕，无需再次验证, AuthHandler 被移除");
         }else {
             System.out.println("无登录认证，强制关闭连接");
+            ctx.channel().close();
         }
     }
 }
