@@ -1,11 +1,11 @@
-package com.hyf.ActualCombat8.utils;
+package com.hyf.ActualCombat567.utils;
 
 import com.hyf.ActualCombat567.attribute.Attributes;
 import io.netty.channel.Channel;
 
 /**
  * @author Howinfun
- * @desc  客户端使用的
+ * @desc
  * @date 2019/7/1
  */
 public class LoginUtils {
