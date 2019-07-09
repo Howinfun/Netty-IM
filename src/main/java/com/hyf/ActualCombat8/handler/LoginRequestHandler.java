@@ -71,7 +71,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 判断IOException异常，暂时是处理客户端主动断开连接报的异常->IOException: 远程主机强迫关闭了一个现有的连接
         // 其他异常直接放行到下个处理
         if (cause instanceof IOException){
-
+            System.out.println("客户端"+SessionUtil.getSession(ctx.channel()).getUserName()+"断开连接");
         }else {
             super.exceptionCaught(ctx,cause);
         }

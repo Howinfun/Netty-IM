@@ -80,7 +80,6 @@ public class Client {
             while(!Thread.interrupted()){
                 // 身份校验逻辑放在服务端，客户端不在进行登录判断
                 if (LoginUtils.isLogin(channel)){
-                    System.out.println("请输入消息：");
                     String toUserId = scanner.next();
                     String msg = scanner.next();
                     MessageRequestPacket requestPacket = new MessageRequestPacket();
