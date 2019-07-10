@@ -90,4 +90,12 @@ public class SessionUtil {
     public static ChannelGroup getChannelGroup(String groupId){
         return channelGroupMap.get(groupId);
     }
+
+    /**
+     * 将群聊从缓存中去除
+     * @param groupId
+     */
+    public static void removeChannelGroup(String groupId){
+        channelGroupMap.remove(groupId);
+    }
 }

@@ -1,11 +1,13 @@
 package com.hyf.ActualCombat9.handler;
 
+import com.hyf.ActualCombat9.packet.JoinGroupNoticePacket;
 import com.hyf.ActualCombat9.packet.JoinGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.JoinGroupResponsePacket;
 import com.hyf.ActualCombat9.utils.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.ChannelMatchers;
 
 /**
  * @author Howinfun
@@ -19,10 +21,19 @@ public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGro
         String groupId = msg.getGroupId();
         ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
         channelGroup.add(ctx.channel());
+
         // 响应客户端
         JoinGroupResponsePacket responsePacket = new JoinGroupResponsePacket();
         responsePacket.setSuccess(true);
         responsePacket.setGroupId(groupId);
         ctx.channel().writeAndFlush(responsePacket);
+
+        // 响应其他客户端
+        JoinGroupNoticePacket noticePacket = new JoinGroupNoticePacket();
+        noticePacket.setOperate(1);
+        noticePacket.setGroupId(groupId);
+        noticePacket.setSession(SessionUtil.getSession(ctx.channel()));
+        channelGroup.writeAndFlush(noticePacket, ChannelMatchers.isNot(ctx.channel()));
+
     }
 }

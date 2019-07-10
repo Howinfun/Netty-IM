@@ -3,6 +3,7 @@ package com.hyf.ActualCombat9;
 import com.hyf.ActualCombat9.command.Command;
 import com.hyf.ActualCombat9.packet.CreateGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.CreateGroupResponsePacket;
+import com.hyf.ActualCombat9.packet.JoinGroupNoticePacket;
 import com.hyf.ActualCombat9.packet.JoinGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.JoinGroupResponsePacket;
 import com.hyf.ActualCombat9.packet.ListGroupMembersRequestPacket;
@@ -50,7 +51,7 @@ public class PacketCodeC {
         packetMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
         packetMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
         packetMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
-
+        packetMap.put(Command.JOIN_GROUP_NOTICE, JoinGroupNoticePacket.class);
     }
     /** 静态内部类做单例 */
     private static class SingleTon{
