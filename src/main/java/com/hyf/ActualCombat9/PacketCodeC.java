@@ -3,6 +3,10 @@ package com.hyf.ActualCombat9;
 import com.hyf.ActualCombat9.command.Command;
 import com.hyf.ActualCombat9.packet.CreateGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.CreateGroupResponsePacket;
+import com.hyf.ActualCombat9.packet.JoinGroupRequestPacket;
+import com.hyf.ActualCombat9.packet.JoinGroupResponsePacket;
+import com.hyf.ActualCombat9.packet.ListGroupMembersRequestPacket;
+import com.hyf.ActualCombat9.packet.ListGroupMembersResponsePacket;
 import com.hyf.ActualCombat9.packet.LoginRequestPacket;
 import com.hyf.ActualCombat9.packet.LoginResponsePacket;
 import com.hyf.ActualCombat9.packet.LogoutRequestPacket;
@@ -10,6 +14,8 @@ import com.hyf.ActualCombat9.packet.LogoutResponsePacket;
 import com.hyf.ActualCombat9.packet.MessageRequestPacket;
 import com.hyf.ActualCombat9.packet.MessageResponsePacket;
 import com.hyf.ActualCombat9.packet.Packet;
+import com.hyf.ActualCombat9.packet.QuitGroupRequestPacket;
+import com.hyf.ActualCombat9.packet.QuitGroupResponsePacket;
 import com.hyf.ActualCombat9.serialize.JsonSerializer;
 import com.hyf.ActualCombat9.serialize.Serializer;
 import com.hyf.ActualCombat9.serialize.SerializerAlogrithm;
@@ -38,6 +44,12 @@ public class PacketCodeC {
         packetMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
         packetMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
         packetMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetMap.put(Command.JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetMap.put(Command.JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetMap.put(Command.QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
 
     }
     /** 静态内部类做单例 */

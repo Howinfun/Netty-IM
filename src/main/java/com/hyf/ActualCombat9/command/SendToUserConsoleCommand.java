@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class SendToUserConsoleCommand implements ConsoleCommand{
     @Override
     public void exec(Scanner scanner, Channel channel) {
+        System.out.print("请输入用户ID和信息：");
         String toUserId = scanner.next();
         String msg = scanner.next();
         MessageRequestPacket requestPacket = new MessageRequestPacket();

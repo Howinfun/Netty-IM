@@ -83,10 +83,11 @@ public class SessionUtil {
     }
 
     /**
-     * 将群聊组从缓存中移出
+     * 根据群聊ID获取channelGroup
      * @param groupId
+     * @return
      */
-    public static void removeChannelGroup(String groupId){
-        channelGroupMap.remove(groupId);
+    public static ChannelGroup getChannelGroup(String groupId){
+        return channelGroupMap.get(groupId);
     }
 }

@@ -3,11 +3,14 @@ package com.hyf.ActualCombat9;
 import com.hyf.ActualCombat9.command.ConsoleCommandManager;
 import com.hyf.ActualCombat9.command.LoginConsoleCommand;
 import com.hyf.ActualCombat9.handler.CreateGroupResponseHandler;
+import com.hyf.ActualCombat9.handler.JoinGroupResponseHandler;
+import com.hyf.ActualCombat9.handler.ListGroupMembersResponseHandler;
 import com.hyf.ActualCombat9.handler.LoginResponseHandler;
 import com.hyf.ActualCombat9.handler.LogoutResponseHandler;
 import com.hyf.ActualCombat9.handler.MessageResponseHandler;
 import com.hyf.ActualCombat9.handler.PacketDecoder;
 import com.hyf.ActualCombat9.handler.PacketEncoder;
+import com.hyf.ActualCombat9.handler.QuitGroupResponseHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
 import com.hyf.ActualCombat9.utils.LoginUtils;
 import io.netty.bootstrap.Bootstrap;
@@ -44,6 +47,9 @@ public class Client2 {
                                 .addLast(new LoginResponseHandler())
                                 .addLast(new MessageResponseHandler())
                                 .addLast(new CreateGroupResponseHandler())
+                                .addLast(new JoinGroupResponseHandler())
+                                .addLast(new QuitGroupResponseHandler())
+                                .addLast(new ListGroupMembersResponseHandler())
                                 .addLast(new LogoutResponseHandler())
                                 .addLast(new PacketEncoder());
                     }

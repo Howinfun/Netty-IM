@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * @desc
  * @date 2019/7/1
  */
-public class Client {
+public class Client3 {
     private static final Integer MAX_RETRY = 5;
     public static void main(String[] args) {
         NioEventLoopGroup workGroup = new NioEventLoopGroup();

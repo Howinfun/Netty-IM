@@ -2,11 +2,14 @@ package com.hyf.ActualCombat9;
 
 import com.hyf.ActualCombat9.handler.AuthHandler;
 import com.hyf.ActualCombat9.handler.CreateGroupRequestHandler;
+import com.hyf.ActualCombat9.handler.JoinGroupRequestHandler;
+import com.hyf.ActualCombat9.handler.ListGroupMembersRequestHandler;
 import com.hyf.ActualCombat9.handler.LoginRequestHandler;
 import com.hyf.ActualCombat9.handler.LogoutRequestHandler;
 import com.hyf.ActualCombat9.handler.MessageRequestHandler;
 import com.hyf.ActualCombat9.handler.PacketDecoder;
 import com.hyf.ActualCombat9.handler.PacketEncoder;
+import com.hyf.ActualCombat9.handler.QuitGroupRequestHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -56,6 +59,9 @@ public class Server {
                                 .addLast(new AuthHandler())
                                 .addLast(new MessageRequestHandler())
                                 .addLast(new CreateGroupRequestHandler())
+                                .addLast(new JoinGroupRequestHandler())
+                                .addLast(new QuitGroupRequestHandler())
+                                .addLast(new ListGroupMembersRequestHandler())
                                 .addLast(new LogoutRequestHandler())
                                 .addLast(new PacketEncoder());
                     }
