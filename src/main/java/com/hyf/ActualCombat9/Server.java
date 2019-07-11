@@ -2,6 +2,7 @@ package com.hyf.ActualCombat9;
 
 import com.hyf.ActualCombat9.handler.AuthHandler;
 import com.hyf.ActualCombat9.handler.CreateGroupRequestHandler;
+import com.hyf.ActualCombat9.handler.GroupMessageRequestHandler;
 import com.hyf.ActualCombat9.handler.JoinGroupRequestHandler;
 import com.hyf.ActualCombat9.handler.ListGroupMembersRequestHandler;
 import com.hyf.ActualCombat9.handler.LoginRequestHandler;
@@ -62,6 +63,7 @@ public class Server {
                                 .addLast(new JoinGroupRequestHandler())
                                 .addLast(new QuitGroupRequestHandler())
                                 .addLast(new ListGroupMembersRequestHandler())
+                                .addLast(new GroupMessageRequestHandler())
                                 .addLast(new LogoutRequestHandler())
                                 .addLast(new PacketEncoder());
                     }

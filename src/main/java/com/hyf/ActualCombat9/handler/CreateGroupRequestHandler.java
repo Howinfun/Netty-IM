@@ -34,6 +34,8 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
                 channelGroup.add(channel);
             }
         }
+        // 最后记得添加上自己的channel,这样子就不用建群也要输入自己的ID了
+        channelGroup.add(ctx.channel());
         String groupId = RandomUtil.randomString(4);
         // 将群聊存在缓存中
         SessionUtil.addChannelGroup(groupId,channelGroup);

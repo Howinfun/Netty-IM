@@ -3,6 +3,7 @@ package com.hyf.ActualCombat9;
 import com.hyf.ActualCombat9.command.ConsoleCommandManager;
 import com.hyf.ActualCombat9.command.LoginConsoleCommand;
 import com.hyf.ActualCombat9.handler.CreateGroupResponseHandler;
+import com.hyf.ActualCombat9.handler.GroupMessageResponseHandler;
 import com.hyf.ActualCombat9.handler.JoinGroupNoticeHandler;
 import com.hyf.ActualCombat9.handler.JoinGroupResponseHandler;
 import com.hyf.ActualCombat9.handler.ListGroupMembersResponseHandler;
@@ -52,6 +53,7 @@ public class Client {
                                 .addLast(new JoinGroupNoticeHandler())
                                 .addLast(new QuitGroupResponseHandler())
                                 .addLast(new ListGroupMembersResponseHandler())
+                                .addLast(new GroupMessageResponseHandler())
                                 .addLast(new LogoutResponseHandler())
                                 .addLast(new PacketEncoder());
                     }

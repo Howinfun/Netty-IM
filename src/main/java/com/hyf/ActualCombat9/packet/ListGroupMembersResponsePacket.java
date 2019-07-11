@@ -13,7 +13,8 @@ import java.util.List;
  */
 @Data
 public class ListGroupMembersResponsePacket extends Packet {
-
+    private boolean success;
+    private String reason;
     private String groupId;
     private List<Session> sessionList;
 

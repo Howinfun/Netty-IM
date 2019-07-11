@@ -3,6 +3,8 @@ package com.hyf.ActualCombat9;
 import com.hyf.ActualCombat9.command.Command;
 import com.hyf.ActualCombat9.packet.CreateGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.CreateGroupResponsePacket;
+import com.hyf.ActualCombat9.packet.GroupMessageRequestPacket;
+import com.hyf.ActualCombat9.packet.GroupMessageResponsePacket;
 import com.hyf.ActualCombat9.packet.JoinGroupNoticePacket;
 import com.hyf.ActualCombat9.packet.JoinGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.JoinGroupResponsePacket;
@@ -33,7 +35,7 @@ import java.util.Map;
 public class PacketCodeC {
 
     private final Map<Byte,Object> serializerMap = new HashMap<>(1);
-    private final Map<Byte,Class<? extends Packet>> packetMap = new HashMap<>(4);
+    private final Map<Byte,Class<? extends Packet>> packetMap = new HashMap<>(20);
 
     private PacketCodeC(){
         serializerMap.put(SerializerAlogrithm.JSON,new JsonSerializer());
@@ -52,6 +54,8 @@ public class PacketCodeC {
         packetMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
         packetMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
         packetMap.put(Command.JOIN_GROUP_NOTICE, JoinGroupNoticePacket.class);
+        packetMap.put(Command.GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
+        packetMap.put(Command.GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
     }
     /** 静态内部类做单例 */
     private static class SingleTon{

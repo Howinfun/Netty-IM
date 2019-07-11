@@ -13,10 +13,10 @@ import java.util.Scanner;
  */
 public class ConsoleCommandManager implements ConsoleCommand{
 
-    private static final Map<String,ConsoleCommand> consoleCommandMap = new HashMap<>(5);
+    private static final Map<String,ConsoleCommand> consoleCommandMap = new HashMap<>(10);
 
 
-    private static ConsoleCommandManager instance = new ConsoleCommandManager();
+    private static final ConsoleCommandManager instance = new ConsoleCommandManager();
 
     private ConsoleCommandManager(){
         consoleCommandMap.put("sendToUser",new SendToUserConsoleCommand());
@@ -25,6 +25,7 @@ public class ConsoleCommandManager implements ConsoleCommand{
         consoleCommandMap.put("joinGroup",new JoinGroupConsoleCommand());
         consoleCommandMap.put("quitGroup",new QuitGroupConsoleCommand());
         consoleCommandMap.put("listGroupMembers",new ListGroupMembersConsoleCommand());
+        consoleCommandMap.put("sendToGroup",new GroupMessageConsoleCommand());
     }
 
     public static ConsoleCommandManager getInstance(){

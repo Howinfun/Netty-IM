@@ -24,14 +24,20 @@ public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<
         String groupId = msg.getGroupId();
         ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
         List<Session> sessionList = new ArrayList<>();
-        for (Channel channel : channelGroup) {
-            Session session = SessionUtil.getSession(channel);
-            sessionList.add(session);
+        ListGroupMembersResponsePacket responsePacket = new ListGroupMembersResponsePacket();
+        if (!channelGroup.isEmpty()){
+            for (Channel channel : channelGroup) {
+                Session session = SessionUtil.getSession(channel);
+                sessionList.add(session);
+            }
+            responsePacket.setSuccess(true);
+            responsePacket.setSessionList(sessionList);
+        }else{
+            responsePacket.setSuccess(false);
+            responsePacket.setReason("群聊不存在");
         }
         // 响应客户端
-        ListGroupMembersResponsePacket requestPacket = new ListGroupMembersResponsePacket();
-        requestPacket.setGroupId(groupId);
-        requestPacket.setSessionList(sessionList);
-        ctx.channel().writeAndFlush(requestPacket);
+        responsePacket.setGroupId(groupId);
+        ctx.channel().writeAndFlush(responsePacket);
     }
 }
