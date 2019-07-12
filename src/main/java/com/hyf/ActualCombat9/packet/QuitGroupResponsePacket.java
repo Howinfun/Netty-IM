@@ -12,6 +12,7 @@ import lombok.Data;
 public class QuitGroupResponsePacket extends Packet{
     private boolean success;
     private String groupId;
+    private String message;
     @Override
     public Byte getCommand() {
         return Command.QUIT_GROUP_RESPONSE;

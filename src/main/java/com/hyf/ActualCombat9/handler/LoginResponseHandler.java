@@ -3,6 +3,7 @@ package com.hyf.ActualCombat9.handler;
 import cn.hutool.core.date.DateUtil;
 import com.hyf.ActualCombat9.packet.LoginResponsePacket;
 import com.hyf.ActualCombat9.utils.LoginUtils;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -13,7 +14,12 @@ import java.io.IOException;
  * @desc
  * @date 2019/7/1
  */
+@ChannelHandler.Sharable
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
+
+    public static final LoginResponseHandler INSTANCE = new LoginResponseHandler();
+
+    private LoginResponseHandler(){}
 
     /*@Override
     public void channelActive(ChannelHandlerContext ctx) {

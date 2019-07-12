@@ -2,17 +2,9 @@ package com.hyf.ActualCombat9;
 
 import com.hyf.ActualCombat9.command.ConsoleCommandManager;
 import com.hyf.ActualCombat9.command.LoginConsoleCommand;
-import com.hyf.ActualCombat9.handler.CreateGroupResponseHandler;
-import com.hyf.ActualCombat9.handler.GroupMessageResponseHandler;
-import com.hyf.ActualCombat9.handler.JoinGroupNoticeHandler;
-import com.hyf.ActualCombat9.handler.JoinGroupResponseHandler;
-import com.hyf.ActualCombat9.handler.ListGroupMembersResponseHandler;
+import com.hyf.ActualCombat9.handler.IMClientHandler;
 import com.hyf.ActualCombat9.handler.LoginResponseHandler;
-import com.hyf.ActualCombat9.handler.LogoutResponseHandler;
-import com.hyf.ActualCombat9.handler.MessageResponseHandler;
-import com.hyf.ActualCombat9.handler.PacketDecoder;
-import com.hyf.ActualCombat9.handler.PacketEncoder;
-import com.hyf.ActualCombat9.handler.QuitGroupResponseHandler;
+import com.hyf.ActualCombat9.handler.PacketCodecHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
 import com.hyf.ActualCombat9.utils.LoginUtils;
 import io.netty.bootstrap.Bootstrap;
@@ -45,17 +37,9 @@ public class Client2 {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ch.pipeline()//.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4))
                                 .addLast(new Spliter())
-                                .addLast(new PacketDecoder())
-                                .addLast(new LoginResponseHandler())
-                                .addLast(new MessageResponseHandler())
-                                .addLast(new CreateGroupResponseHandler())
-                                .addLast(new JoinGroupResponseHandler())
-                                .addLast(new JoinGroupNoticeHandler())
-                                .addLast(new QuitGroupResponseHandler())
-                                .addLast(new ListGroupMembersResponseHandler())
-                                .addLast(new GroupMessageResponseHandler())
-                                .addLast(new LogoutResponseHandler())
-                                .addLast(new PacketEncoder());
+                                .addLast(PacketCodecHandler.INSTANCE)
+                                .addLast(LoginResponseHandler.INSTANCE)
+                                .addLast(IMClientHandler.INSTANCE);
                     }
                 });
         connect(bootstrap,"127.0.0.1",1000,5);

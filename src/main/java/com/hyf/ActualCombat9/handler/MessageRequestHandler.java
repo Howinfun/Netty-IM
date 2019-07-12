@@ -5,6 +5,7 @@ import com.hyf.ActualCombat9.packet.MessageRequestPacket;
 import com.hyf.ActualCombat9.packet.MessageResponsePacket;
 import com.hyf.ActualCombat9.utils.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -13,7 +14,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @desc
  * @date 2019/7/1
  */
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+
+    private MessageRequestHandler(){}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket messageRequestPacket) throws Exception {
         String msg = messageRequestPacket.getMessage();

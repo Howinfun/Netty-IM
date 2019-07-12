@@ -5,6 +5,7 @@ import com.hyf.ActualCombat9.packet.ListGroupMembersRequestPacket;
 import com.hyf.ActualCombat9.packet.ListGroupMembersResponsePacket;
 import com.hyf.ActualCombat9.utils.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -17,7 +18,12 @@ import java.util.List;
  * @desc
  * @date 2019/7/10
  */
+@ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+    public static final ListGroupMembersRequestHandler INSTANCE = new ListGroupMembersRequestHandler();
+
+    private ListGroupMembersRequestHandler(){}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ListGroupMembersRequestPacket msg) throws Exception {
         // 遍历ChannelGroup，获取Session

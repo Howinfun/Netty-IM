@@ -1,6 +1,7 @@
 package com.hyf.ActualCombat9.handler;
 
 import com.hyf.ActualCombat9.utils.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -9,7 +10,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @desc
  * @date 2019/7/4
  */
+@ChannelHandler.Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter {
+
+    public static final AuthHandler INSTANCE = new AuthHandler();
+    private AuthHandler(){}
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

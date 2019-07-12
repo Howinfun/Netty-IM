@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class GroupMessageResponsePacket extends Packet{
 
+    private boolean success;
     private String fromGroupId;
     private Session fromUser;
     private String message;

@@ -1,16 +1,9 @@
 package com.hyf.ActualCombat9;
 
 import com.hyf.ActualCombat9.handler.AuthHandler;
-import com.hyf.ActualCombat9.handler.CreateGroupRequestHandler;
-import com.hyf.ActualCombat9.handler.GroupMessageRequestHandler;
-import com.hyf.ActualCombat9.handler.JoinGroupRequestHandler;
-import com.hyf.ActualCombat9.handler.ListGroupMembersRequestHandler;
+import com.hyf.ActualCombat9.handler.IMServerHandler;
 import com.hyf.ActualCombat9.handler.LoginRequestHandler;
-import com.hyf.ActualCombat9.handler.LogoutRequestHandler;
-import com.hyf.ActualCombat9.handler.MessageRequestHandler;
-import com.hyf.ActualCombat9.handler.PacketDecoder;
-import com.hyf.ActualCombat9.handler.PacketEncoder;
-import com.hyf.ActualCombat9.handler.QuitGroupRequestHandler;
+import com.hyf.ActualCombat9.handler.PacketCodecHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -52,20 +45,15 @@ public class Server {
                          * 3、AuthHandler必须放在LoginRequestHandler后面，即先进行登录逻辑再进行验证逻辑
                          *  注意：因为LoginRequestHandler中是直接调用writeAndFlush响应客户端，所以当客户端下次发送消息过来才会进行身份校验
                          *  如果登录失败，此时channel才会被断开，活跃连接数才会被减少1（这个待改进）。
+                         *
+                         * 4、除了Spliter之外的handler，都可以做成单例，共享的，因为他们对于Channel是无状态的，如果每个通道都new一个出来，非常的浪费资源，消耗内存
                          */
                         ch.pipeline()//.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4))
                                 .addLast(new Spliter())
-                                .addLast(new PacketDecoder())
-                                .addLast(new LoginRequestHandler())
-                                .addLast(new AuthHandler())
-                                .addLast(new MessageRequestHandler())
-                                .addLast(new CreateGroupRequestHandler())
-                                .addLast(new JoinGroupRequestHandler())
-                                .addLast(new QuitGroupRequestHandler())
-                                .addLast(new ListGroupMembersRequestHandler())
-                                .addLast(new GroupMessageRequestHandler())
-                                .addLast(new LogoutRequestHandler())
-                                .addLast(new PacketEncoder());
+                                .addLast(PacketCodecHandler.INSTANCE)
+                                .addLast(LoginRequestHandler.INSTANCE)
+                                .addLast(AuthHandler.INSTANCE)
+                                .addLast(IMServerHandler.INSTANCE);
                     }
                 });
         bind(serverBootstrap,1000);

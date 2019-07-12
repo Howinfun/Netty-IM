@@ -7,6 +7,7 @@ import com.hyf.ActualCombat9.entity.Session;
 import com.hyf.ActualCombat9.packet.LoginRequestPacket;
 import com.hyf.ActualCombat9.packet.LoginResponsePacket;
 import com.hyf.ActualCombat9.utils.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -18,7 +19,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @desc
  * @date 2019/7/1
  */
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
+
+    private LoginRequestHandler(){}
 
     /** 使用静态成员变量来统计，因为静态成员变量只属于类，所有类的实例都持有同一个静态成员变量
      *  注意：此静态成员变量的修饰词为public，因为要在服务端启动后，打印出来 */

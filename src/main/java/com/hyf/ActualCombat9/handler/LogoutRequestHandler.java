@@ -2,6 +2,7 @@ package com.hyf.ActualCombat9.handler;
 
 import com.hyf.ActualCombat9.packet.LogoutRequestPacket;
 import com.hyf.ActualCombat9.packet.LogoutResponsePacket;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -10,7 +11,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @desc
  * @date 2019/7/9
  */
+@ChannelHandler.Sharable
 public class LogoutRequestHandler extends SimpleChannelInboundHandler<LogoutRequestPacket> {
+
+    public static final LogoutRequestHandler INSTANCE = new LogoutRequestHandler();
+
+    private LogoutRequestHandler(){}
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LogoutRequestPacket msg) throws Exception {

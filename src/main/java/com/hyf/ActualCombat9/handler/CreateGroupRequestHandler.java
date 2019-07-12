@@ -5,6 +5,7 @@ import com.hyf.ActualCombat9.packet.CreateGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.CreateGroupResponsePacket;
 import com.hyf.ActualCombat9.utils.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -18,7 +19,13 @@ import java.util.List;
  * @desc
  * @date 2019/7/9
  */
+@ChannelHandler.Sharable
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
+
+    public static final CreateGroupRequestHandler INSTANCE = new CreateGroupRequestHandler();
+
+    private CreateGroupRequestHandler(){}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupRequestPacket msg) throws Exception {
         // 群聊人员ID
@@ -35,6 +42,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
             }
         }
         // 最后记得添加上自己的channel,这样子就不用建群也要输入自己的ID了
+        userName.add(SessionUtil.getSession(ctx.channel()).getUserName());
         channelGroup.add(ctx.channel());
         String groupId = RandomUtil.randomString(4);
         // 将群聊存在缓存中

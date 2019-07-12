@@ -1,6 +1,7 @@
 package com.hyf.ActualCombat9.handler;
 
 import com.hyf.ActualCombat9.packet.CreateGroupResponsePacket;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -9,7 +10,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @desc
  * @date 2019/7/9
  */
+@ChannelHandler.Sharable
 public class CreateGroupResponseHandler extends SimpleChannelInboundHandler<CreateGroupResponsePacket> {
+
+    public static final CreateGroupResponseHandler INSTANCE = new CreateGroupResponseHandler();
+
+    private CreateGroupResponseHandler(){}
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupResponsePacket msg) throws Exception {
         if (msg.isSuccess()){

@@ -1,6 +1,6 @@
 package com.hyf.ActualCombat9.utils;
 
-import com.hyf.ActualCombat567.attribute.Attributes;
+import com.hyf.ActualCombat9.attribute.Attributes;
 import io.netty.channel.Channel;
 
 /**
