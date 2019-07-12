@@ -2,10 +2,11 @@ package com.hyf.ActualCombat9;
 
 import com.hyf.ActualCombat9.command.ConsoleCommandManager;
 import com.hyf.ActualCombat9.command.LoginConsoleCommand;
-import com.hyf.ActualCombat9.handler.IMClientHandler;
-import com.hyf.ActualCombat9.handler.LoginResponseHandler;
+import com.hyf.ActualCombat9.handler.HeartBeatTimerHandler;
 import com.hyf.ActualCombat9.handler.PacketCodecHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
+import com.hyf.ActualCombat9.handler.client.IMClientHandler;
+import com.hyf.ActualCombat9.handler.client.LoginResponseHandler;
 import com.hyf.ActualCombat9.utils.LoginUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -39,7 +40,9 @@ public class Client {
                                 .addLast(new Spliter())
                                 .addLast(PacketCodecHandler.INSTANCE)
                                 .addLast(LoginResponseHandler.INSTANCE)
-                                .addLast(IMClientHandler.INSTANCE);
+                                .addLast(IMClientHandler.INSTANCE)
+                                // 发送定时心跳
+                                .addLast(new HeartBeatTimerHandler());
                     }
                 });
         connect(bootstrap,"127.0.0.1",1000,5);

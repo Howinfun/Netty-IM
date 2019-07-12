@@ -1,4 +1,4 @@
-package com.hyf.ActualCombat9.handler;
+package com.hyf.ActualCombat9.handler.client;
 
 import com.hyf.ActualCombat9.packet.Packet;
 import io.netty.channel.ChannelHandler;
@@ -42,6 +42,9 @@ public class IMClientHandler extends SimpleChannelInboundHandler<Packet> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
-        handlerMap.get(msg.getCommand()).channelRead(ctx,msg);
+        SimpleChannelInboundHandler handler = handlerMap.get(msg.getCommand());
+        if (handler != null){
+            handler.channelRead(ctx,msg);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.hyf.ActualCombat9.handler;
+package com.hyf.ActualCombat9.handler.client;
 
 import cn.hutool.core.date.DateUtil;
 import com.hyf.ActualCombat9.packet.LoginResponsePacket;
@@ -50,6 +50,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         // 其他异常直接放行到下个处理
         if (cause instanceof IOException){
             System.out.println("服务端断开连接");
+            ctx.channel().close();
         }else {
             super.exceptionCaught(ctx,cause);
         }

@@ -1,10 +1,12 @@
 package com.hyf.ActualCombat9;
 
-import com.hyf.ActualCombat9.handler.AuthHandler;
-import com.hyf.ActualCombat9.handler.IMServerHandler;
-import com.hyf.ActualCombat9.handler.LoginRequestHandler;
+import com.hyf.ActualCombat9.handler.IMIdleStateHandler;
 import com.hyf.ActualCombat9.handler.PacketCodecHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
+import com.hyf.ActualCombat9.handler.server.AuthHandler;
+import com.hyf.ActualCombat9.handler.server.HeartBeatRequestHandler;
+import com.hyf.ActualCombat9.handler.server.IMServerHandler;
+import com.hyf.ActualCombat9.handler.server.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -47,11 +49,15 @@ public class Server {
                          *  如果登录失败，此时channel才会被断开，活跃连接数才会被减少1（这个待改进）。
                          *
                          * 4、除了Spliter之外的handler，都可以做成单例，共享的，因为他们对于Channel是无状态的，如果每个通道都new一个出来，非常的浪费资源，消耗内存
+                         * 5、IdleStateHandler放在最前面，因为他只会更新lastReadTime和判断是否超时，然后会调用ctx.fileChannelRead给下一个InBoundHandler的channelRead处理读逻辑
                          */
                         ch.pipeline()//.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,7,4))
+                                .addLast(new IMIdleStateHandler())
                                 .addLast(new Spliter())
                                 .addLast(PacketCodecHandler.INSTANCE)
                                 .addLast(LoginRequestHandler.INSTANCE)
+                                // 因为心跳检测不需要AuthHandler来认证，所以放在AuthHandler前面
+                                .addLast(HeartBeatRequestHandler.INSTANCE)
                                 .addLast(AuthHandler.INSTANCE)
                                 .addLast(IMServerHandler.INSTANCE);
                     }

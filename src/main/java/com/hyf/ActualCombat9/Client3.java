@@ -2,8 +2,8 @@ package com.hyf.ActualCombat9;
 
 import com.hyf.ActualCombat9.command.ConsoleCommandManager;
 import com.hyf.ActualCombat9.command.LoginConsoleCommand;
-import com.hyf.ActualCombat9.handler.IMClientHandler;
-import com.hyf.ActualCombat9.handler.LoginResponseHandler;
+import com.hyf.ActualCombat9.handler.client.IMClientHandler;
+import com.hyf.ActualCombat9.handler.client.LoginResponseHandler;
 import com.hyf.ActualCombat9.handler.PacketCodecHandler;
 import com.hyf.ActualCombat9.handler.Spliter;
 import com.hyf.ActualCombat9.utils.LoginUtils;

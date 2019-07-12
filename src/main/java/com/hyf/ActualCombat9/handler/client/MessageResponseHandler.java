@@ -1,4 +1,4 @@
-package com.hyf.ActualCombat9.handler;
+package com.hyf.ActualCombat9.handler.client;
 
 import com.hyf.ActualCombat9.packet.MessageResponsePacket;
 import io.netty.channel.ChannelHandler;

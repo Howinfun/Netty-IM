@@ -1,4 +1,4 @@
-package com.hyf.ActualCombat9.handler;
+package com.hyf.ActualCombat9.handler.server;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -66,7 +66,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelInactive");
         // 通道断开时，判断客户端是否登录成功过，如果是的话解绑session，并且活跃连接数减一
         if (SessionUtil.isLogin(ctx.channel())){
             // 活跃连接数减1

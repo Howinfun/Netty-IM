@@ -5,6 +5,8 @@ import com.hyf.ActualCombat9.packet.CreateGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.CreateGroupResponsePacket;
 import com.hyf.ActualCombat9.packet.GroupMessageRequestPacket;
 import com.hyf.ActualCombat9.packet.GroupMessageResponsePacket;
+import com.hyf.ActualCombat9.packet.HeartBeatRequestPacket;
+import com.hyf.ActualCombat9.packet.HeartBeatResponsePacket;
 import com.hyf.ActualCombat9.packet.JoinGroupNoticePacket;
 import com.hyf.ActualCombat9.packet.JoinGroupRequestPacket;
 import com.hyf.ActualCombat9.packet.JoinGroupResponsePacket;
@@ -56,6 +58,8 @@ public class PacketCodeC {
         packetMap.put(Command.JOIN_GROUP_NOTICE, JoinGroupNoticePacket.class);
         packetMap.put(Command.GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
         packetMap.put(Command.GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
+        packetMap.put(Command.HEART_BEAT_REQUEST, HeartBeatRequestPacket.class);
+        packetMap.put(Command.HEART_BEAT_RESPONSE, HeartBeatResponsePacket.class);
     }
     /** 静态内部类做单例 */
     private static class SingleTon{
