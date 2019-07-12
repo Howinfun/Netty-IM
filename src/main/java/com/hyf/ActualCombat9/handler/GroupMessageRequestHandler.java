@@ -1,5 +1,6 @@
 package com.hyf.ActualCombat9.handler;
 
+import com.hyf.ActualCombat9.TaskThreadPool;
 import com.hyf.ActualCombat9.entity.Session;
 import com.hyf.ActualCombat9.packet.GroupMessageRequestPacket;
 import com.hyf.ActualCombat9.packet.GroupMessageResponsePacket;
@@ -22,24 +23,26 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GroupMessageRequestPacket msg) throws Exception {
-        String groupId = msg.getGroupId();
-        String message = msg.getMessage();
-        ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
-        GroupMessageResponsePacket responsePacket = new GroupMessageResponsePacket();
-        // 先判断用户是否还在群里头
-        if (channelGroup.contains(ctx.channel())){
-            Session fromUser = SessionUtil.getSession(ctx.channel());
-            // 给群里所有的人发送响应
-            responsePacket.setSuccess(true);
-            responsePacket.setFromGroupId(groupId);
-            responsePacket.setFromUser(fromUser);
-            responsePacket.setMessage(message);
-            channelGroup.writeAndFlush(responsePacket);
-        }else{
-            // 只给当前用户发送响应
-            responsePacket.setSuccess(false);
-            responsePacket.setMessage("你已不在此群聊中，发送失败");
-            ctx.channel().writeAndFlush(responsePacket);
-        }
+        TaskThreadPool.INSTANCE.submit(()-> {
+            String groupId = msg.getGroupId();
+            String message = msg.getMessage();
+            ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
+            GroupMessageResponsePacket responsePacket = new GroupMessageResponsePacket();
+            // 先判断用户是否还在群里头
+            if (channelGroup.contains(ctx.channel())) {
+                Session fromUser = SessionUtil.getSession(ctx.channel());
+                // 给群里所有的人发送响应
+                responsePacket.setSuccess(true);
+                responsePacket.setFromGroupId(groupId);
+                responsePacket.setFromUser(fromUser);
+                responsePacket.setMessage(message);
+                channelGroup.writeAndFlush(responsePacket);
+            } else {
+                // 只给当前用户发送响应
+                responsePacket.setSuccess(false);
+                responsePacket.setMessage("你已不在此群聊中，发送失败");
+                ctx.channel().writeAndFlush(responsePacket);
+            }
+        });
     }
 }
